@@ -5,16 +5,11 @@ from auth_middleware import generateToken, decodeToken
 from job_middleware import generateJobResponseJSON
 
 app = Flask(__name__)
-app.debug = True
 connect = connectDB()
 cursor = connect.cursor()
 
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret'
 app.config['SECRET_KEY'] = SECRET_KEY
-
-# @app.route('/')
-# def index():
-#     return 'Hello world'
 
 # sign up route
 @app.route('/signup', methods=['POST'])
@@ -180,27 +175,4 @@ def deleteJob(id):
     return jsonify({'message': 'Invalid Job ID'})
 
 
-
-@app.route('/token', methods=['GET'])
-def testToken():
-    print(request.headers['Token'])
-    token = request.headers['Token']
-    try:
-        data = decodeToken(token)# jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])
-        return 'User id={}'.format(data["user_id"])
-    except Exception as e:
-        return 'Something went wrong: {}'.format(e)
-
-
-# token auth completed, remove all extra files and start with job API
-
-
-from flask import Blueprint
-
-auth = Blueprint('auth', __name__, url_prefix='/auth')
-
-#from blueprint_auth import authentication
-
-app.register_blueprint(auth, url_prefix="/api/auth")
-
-app.run()
+app.run(debug=True)
