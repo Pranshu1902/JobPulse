@@ -1,5 +1,5 @@
-# from django.shortcuts import render
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets
+from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from .serializer import *
 from rest_framework.response import Response
@@ -9,22 +9,24 @@ class UserViewSet(viewsets.ModelViewSet): #GenericViewSet, mixins.CreateModelMix
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    # def create(self, request):
-    #     print(request)
-    #     if request.is_ajax():
-    #         if request.method == 'POST':
-    #             print(request.body)
-
-    #     serializer = UserSerializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
+
+    @action(detail=True, methods=['GET'], serializer_class=JobStatusUpdateSerializer)
+    def get_status(self, request, *args):
+        job = self.get_object()
+        statuses = job.statuses.all()
+        serializer = self.get_serializer(statuses, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['GET'], serializer_class=JobCommentSerializer)
+    def get_comments(self, request, *args):
+        job = self.get_object()
+        statuses = job.comments.all()
+        serializer = self.get_serializer(statuses, many=True)
+        return Response(serializer.data)
 
 
 class JobStatusUpdateViewSet(viewsets.ModelViewSet):

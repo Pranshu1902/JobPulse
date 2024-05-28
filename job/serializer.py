@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
+
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
