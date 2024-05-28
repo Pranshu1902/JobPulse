@@ -16,19 +16,19 @@ class UserSerializer(serializers.ModelSerializer):
         )
         return user
 
-class JobSerializer(serializers.Serializer):
+class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = '__all__'
 
 
-class JobStatusUpdateSerializer(serializers.Serializer):
+class JobStatusUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobStatusUpdate
         fields = '__all__'
 
 
-class JobCommentSerializer(serializers.Serializer):
+class JobCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobComment
         fields = '__all__'

@@ -25,6 +25,8 @@ router = routers.SimpleRouter(trailing_slash=True)
 
 router.register('users', UserViewSet, basename="users")
 router.register('jobs', JobViewSet, basename='jobs')
+router.register('status', JobStatusUpdateViewSet, basename='status')
+router.register('comments', JobCommentViewSet, basename='comments')
 
 schema_view = get_schema_view(
     openapi.Info(

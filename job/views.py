@@ -26,7 +26,12 @@ class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
 
-    # def list(self, request):
-    #     queryset = Job.objects.all()
-    #     serializer = JobSerializer(queryset, many=True)
-    #     return Response(serializer.data)
+
+class JobStatusUpdateViewSet(viewsets.ModelViewSet):
+    queryset = JobStatusUpdate.objects.all()
+    serializer_class = JobStatusUpdateSerializer
+
+
+class JobCommentViewSet(viewsets.ModelViewSet):
+    queryset = JobComment.objects.all()
+    serializer_class = JobCommentSerializer
