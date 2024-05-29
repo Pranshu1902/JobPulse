@@ -42,8 +42,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('api-token-auth/', views.obtain_auth_token),
-
+    path('current-user/', get_current_user),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
 ]
 
-# urlpatterns += router.urls
+urlpatterns += router.urls

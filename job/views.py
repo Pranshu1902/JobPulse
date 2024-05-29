@@ -1,8 +1,15 @@
 from rest_framework import viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from django.contrib.auth.models import User
 from .serializer import *
 from rest_framework.response import Response
+
+@api_view(http_method_names=["GET"])
+def get_current_user(request):
+    user = request.user
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
+
 
 class UserViewSet(viewsets.ModelViewSet): #GenericViewSet, mixins.CreateModelMixin):
     permission_classes = []
