@@ -21,6 +21,7 @@ class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = '__all__'
+        read_only_fields = ['applicant']
 
 
 class JobStatusUpdateSerializer(serializers.ModelSerializer):

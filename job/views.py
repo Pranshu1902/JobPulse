@@ -21,8 +21,8 @@ class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
 
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        serializer.save(applicant=self.request.user)
 
     @action(detail=True, methods=['GET'], serializer_class=JobStatusUpdateSerializer)
     def get_status(self, request, *args):
