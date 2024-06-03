@@ -37,6 +37,9 @@ class Company(models.Model):
         return f"{self.name}"
 
 
+# TODO: decide and probably remove the Company model class altogether else update the Job's perform_create method
+# to automatically create a Company object for each Job
+
 class Job(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     role = models.CharField(max_length=30, null=False, blank=False)
@@ -62,7 +65,7 @@ class Job(models.Model):
 class JobStatusUpdate(models.Model):
     """Model to keep track of all updates made to the job status"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="statuses")
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="Applied", null=False, blank=False)
     update_text = models.CharField(max_length=100, default="Initialize Job")
     date_posted = models.DateField(auto_now_add=True)
