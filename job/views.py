@@ -5,6 +5,7 @@ from .serializer import *
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import PermissionDenied
 
 @api_view(http_method_names=["GET"])
 def get_current_user(request):
@@ -35,9 +36,14 @@ class JobViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def comment(self, request, pk=None):
         job = self.get_object()
+
+        if job.applicant.id != self.request.user.id:
+            raise PermissionDenied('You do not have permission to perform this action')
+
         serializer = JobCommentSerializer(data=request.data)
-        if serializer.is_valid(): # and job.applicant == self.request.user ??
-            # TODO: maybe add check that the authorized user is only performing the updation
+        if serializer.is_valid():
+            # TODO: add pre-commit to run django tests
+
             serializer.save(job=job)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
