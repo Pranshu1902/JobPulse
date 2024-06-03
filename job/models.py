@@ -44,7 +44,7 @@ class Job(models.Model):
     # company = models.CharField(max_length=40, null=False, blank=False)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     platform = models.CharField(max_length=30, null=False, blank=False)
-    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="Applied")
+    # status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="Applied")
     application_date = models.DateTimeField(auto_now_add=True)
     salary = models.IntegerField()
     contract_length = models.CharField(max_length=15)

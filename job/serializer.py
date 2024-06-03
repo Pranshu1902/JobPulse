@@ -17,13 +17,6 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class JobSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Job
-        fields = '__all__'
-        read_only_fields = ['applicant']
-
-
 class JobStatusUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobStatusUpdate
@@ -33,10 +26,21 @@ class JobStatusUpdateSerializer(serializers.ModelSerializer):
 class JobCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobComment
-        fields = '__all__'
+        fields = ['comment']
+        read_only_fields = ['job']
 
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = '__all__'
+
+
+class JobSerializer(serializers.ModelSerializer):
+    comments = JobCommentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Job
+        fields = '__all__'
+        read_only_fields = ['applicant']
+
