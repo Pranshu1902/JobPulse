@@ -47,3 +47,8 @@ class JobStatusUpdateViewSet(viewsets.ModelViewSet):
 class JobCommentViewSet(viewsets.ModelViewSet):
     queryset = JobComment.objects.all()
     serializer_class = JobCommentSerializer
+
+
+class CompanyViewSet(viewsets.ModelViewSet):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer

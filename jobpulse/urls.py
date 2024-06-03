@@ -28,6 +28,7 @@ router.register('users', UserViewSet, basename="users")
 router.register('jobs', JobViewSet, basename='jobs')
 router.register('status', JobStatusUpdateViewSet, basename='status')
 router.register('comments', JobCommentViewSet, basename='comments')
+router.register('company', CompanyViewSet, basename='company')
 
 schema_view = get_schema_view(
     openapi.Info(
