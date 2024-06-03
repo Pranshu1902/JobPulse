@@ -36,7 +36,8 @@ class JobViewSet(viewsets.ModelViewSet):
     def comment(self, request, pk=None):
         job = self.get_object()
         serializer = JobCommentSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(): # and job.applicant == self.request.user ??
+            # TODO: maybe add check that the authorized user is only performing the updation
             serializer.save(job=job)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
