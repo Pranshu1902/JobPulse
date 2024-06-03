@@ -1,4 +1,4 @@
-from typing import Iterable
+import uuid
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -27,6 +27,7 @@ STATUS_CHOICES = (
 
 
 class Company(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=30, null=False, blank=False)
     # founded = models.IntegerField()
     # website = models.URLField()
@@ -37,6 +38,7 @@ class Company(models.Model):
 
 
 class Job(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     role = models.CharField(max_length=30, null=False, blank=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     # company = models.CharField(max_length=40, null=False, blank=False)
@@ -59,6 +61,7 @@ class Job(models.Model):
 
 class JobStatusUpdate(models.Model):
     """Model to keep track of all updates made to the job status"""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="Applied", null=False, blank=False)
     update_text = models.CharField(max_length=100, default="Initialize Job")
@@ -68,6 +71,7 @@ class JobStatusUpdate(models.Model):
 
 class JobComment(models.Model):
     """Model to store the comments added for each job application"""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     comment = models.CharField(max_length=100, null=False, blank=False)
     date = models.DateField(auto_now_add=True)
