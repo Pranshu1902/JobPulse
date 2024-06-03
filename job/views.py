@@ -56,9 +56,13 @@ class JobViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def update_status(self, request, pk=None):
         job = self.get_object()
+
+        if job.applicant.id != self.request.user.id:
+            raise PermissionDenied('You do not have permission to perform this action')
+
         serializer = JobStatusUpdateSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(job=job, user=request.user)
+            serializer.save(job=job)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 

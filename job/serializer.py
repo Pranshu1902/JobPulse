@@ -20,7 +20,8 @@ class UserSerializer(serializers.ModelSerializer):
 class JobStatusUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobStatusUpdate
-        fields = '__all__'
+        fields = ['status', 'update_text']
+        read_only_fields = ['job']
 
 
 class JobCommentSerializer(serializers.ModelSerializer):
@@ -38,6 +39,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
     comments = JobCommentSerializer(many=True, read_only=True)
+    status = JobStatusUpdateSerializer(many=True, read_only=True)
 
     class Meta:
         model = Job

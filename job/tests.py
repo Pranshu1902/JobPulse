@@ -43,12 +43,6 @@ class JobTest(TestCase, TestUtils):
     
     def test_create_comment_with_separate_user(self):
         job = self.create_job(applicant=self.user, role="SDE", company=self.company, platform="test", salary=100000, contract_length="Test", job_link="https://www.company.com")
-        response = self.client.post(
-            f'/jobs/{job.id}/comment/', {
-                'comment': 'this is first comment',
-            }
-        )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # create new user
         user1 = User.objects.create(username="Test1")
@@ -60,6 +54,35 @@ class JobTest(TestCase, TestUtils):
         response = self.client.post(
             f'/jobs/{job.id}/comment/', {
                 'comment': 'this is first comment',
+            }
+        )
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.json()['detail'], "You do not have permission to perform this action")
+
+    def test_update_status(self):
+        job = self.create_job(applicant=self.user, role="SDE1", company=self.company, platform="test", salary=100000, contract_length="Test", job_link="https://www.company.com")
+        response = self.client.post(
+            f'/jobs/{job.id}/update_status/', {
+                'status': 'Offered',
+                'update_text': 'Offer received',
+            }
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_update_status_with_separate_user(self):
+        job = self.create_job(applicant=self.user, role="SDE", company=self.company, platform="test", salary=100000, contract_length="Test", job_link="https://www.company.com")
+        
+        # create new user
+        user1 = User.objects.create(username="Test1")
+        user1.set_password("12345678")
+        user1.save()
+        self.force_login("Test1", "12345678")
+
+        # new user adding comment on job posting of first user
+        response = self.client.post(
+            f'/jobs/{job.id}/update_status/', {
+                'status': 'Offered',
+                'update_text': 'Offer received',
             }
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
