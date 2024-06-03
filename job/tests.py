@@ -1,6 +1,5 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from .models import Company
 from rest_framework import status
 from rest_framework.test import APIClient
 from .utils.tests.test_utils import TestUtils
@@ -50,7 +49,7 @@ class JobTest(TestCase, TestUtils):
         user1.save()
         self.force_login("Test1", "12345678")
 
-        # new user adding comment on job posting of first user
+        # new user adding comment on job posting of other user
         response = self.client.post(
             f'/jobs/{job.id}/comment/', {
                 'comment': 'this is first comment',
@@ -78,7 +77,7 @@ class JobTest(TestCase, TestUtils):
         user1.save()
         self.force_login("Test1", "12345678")
 
-        # new user adding comment on job posting of first user
+        # new user updating status on job posting of other user
         response = self.client.post(
             f'/jobs/{job.id}/update_status/', {
                 'status': 'Offered',
