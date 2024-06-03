@@ -37,7 +37,7 @@ class JobViewSet(viewsets.ModelViewSet):
         job = self.get_object()
         serializer = JobCommentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(job=job, user=request.user)
+            serializer.save(job=job)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
     
