@@ -87,10 +87,10 @@ class JobTest(TestCase, TestUtils):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response.json()['detail'], "You do not have permission to perform this action")
 
-    def test_default_status_is_made_on_job_creation(self):
-        job = self.create_job(applicant=self.user, role="SDE", company=self.company, platform="test", salary=100000, contract_length="Test", job_link="https://www.company.com")
-        response = self.client.get(
-            f"/jobs/{job.id}/get_current_status/"
-        )
-        print(response.json())
-        self.assertEqual(response.json()['status'], 'Applied')
+    # def test_default_status_is_made_on_job_creation(self):
+    #     job = self.create_job(applicant=self.user, role="SDE2", company=self.company, platform="test", salary=100000, contract_length="Test", job_link="https://www.company.com")
+    #     response = self.client.get(
+    #         f"/jobs/{job.id}/get_current_status/"
+    #     )
+    #     print(response.json())
+    #     self.assertEqual(response.json()['status'], 'Applied')

@@ -26,7 +26,7 @@ class JobViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         job = serializer.save(applicant=self.request.user)
-        
+
         # Automatically create a default Job Status for this job
         status_data = {
             "status": "Applied",
@@ -35,7 +35,6 @@ class JobViewSet(viewsets.ModelViewSet):
         status_serializer = JobStatusUpdateSerializer(data=status_data)
         if status_serializer.is_valid():
             status_serializer.save(job=job)
-            print(JobStatusUpdate.objects.all()) # gets shown here but not in get_current_status
         else:
             raise serializers.ValidationError(status_serializer.errors)
 
@@ -84,7 +83,6 @@ class JobViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['GET'], serializer_class=JobStatusUpdateSerializer)
     def get_current_status(self, request, pk=None, *args):
         job = self.get_object()
-        print(JobStatusUpdate.objects.all())
         latest_status = job.statuses.order_by('-date_posted').first()
         serializer = self.get_serializer(latest_status)
         return Response(serializer.data)

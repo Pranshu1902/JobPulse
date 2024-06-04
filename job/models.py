@@ -58,8 +58,6 @@ class Job(models.Model):
     
     # Create a JobUpdate object automatically when the Job is created
     # Also, create a new company automatically with basic details to be added by the user later
-    # def save(self, force_insert: bool = ..., force_update: bool = ..., using: str | None = ..., update_fields: Iterable[str] | None = ...) -> None:
-    #     return super().save(force_insert, force_update, using, update_fields)
 
 
 class JobStatusUpdate(models.Model):
