@@ -1,5 +1,6 @@
 from job.models import *
 
+
 class TestUtils:
     """Base class with basic methods to be used in tests"""
 

@@ -7,27 +7,69 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('job', '0001_initial'),
+        ("job", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='JobComment',
+            name="JobComment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('comment', models.CharField(max_length=100)),
-                ('date', models.DateField(auto_now_add=True)),
-                ('job', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='job.job')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("comment", models.CharField(max_length=100)),
+                ("date", models.DateField(auto_now_add=True)),
+                (
+                    "job",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="job.job"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='JobStatusUpdate',
+            name="JobStatusUpdate",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[('Applied', 'Applied'), ('Rejected', 'Rejected'), ('Offered', 'Offered'), ('Accepted', 'Accepted'), ('Withdrawn', 'Withdrawn')], default='Applied', max_length=15)),
-                ('update_text', models.CharField(default='Initialize Job', max_length=100)),
-                ('date_posted', models.DateField(auto_now_add=True)),
-                ('job', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='job.job')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("Applied", "Applied"),
+                            ("Rejected", "Rejected"),
+                            ("Offered", "Offered"),
+                            ("Accepted", "Accepted"),
+                            ("Withdrawn", "Withdrawn"),
+                        ],
+                        default="Applied",
+                        max_length=15,
+                    ),
+                ),
+                (
+                    "update_text",
+                    models.CharField(default="Initialize Job", max_length=100),
+                ),
+                ("date_posted", models.DateField(auto_now_add=True)),
+                (
+                    "job",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="job.job"
+                    ),
+                ),
             ],
         ),
     ]

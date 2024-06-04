@@ -15,18 +15,45 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Job',
+            name="Job",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('role', models.CharField(max_length=30)),
-                ('company', models.CharField(max_length=30)),
-                ('platform', models.CharField(max_length=30)),
-                ('status', models.CharField(choices=[('Applied', 'Applied'), ('Rejected', 'Rejected'), ('Offered', 'Offered'), ('Accepted', 'Accepted'), ('Withdrawn', 'Withdrawn')], default='Applied', max_length=15)),
-                ('application_date', models.DateTimeField(auto_now_add=True)),
-                ('salary', models.IntegerField()),
-                ('contract_length', models.CharField(max_length=15)),
-                ('job_link', models.URLField()),
-                ('applicant', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("role", models.CharField(max_length=30)),
+                ("company", models.CharField(max_length=30)),
+                ("platform", models.CharField(max_length=30)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("Applied", "Applied"),
+                            ("Rejected", "Rejected"),
+                            ("Offered", "Offered"),
+                            ("Accepted", "Accepted"),
+                            ("Withdrawn", "Withdrawn"),
+                        ],
+                        default="Applied",
+                        max_length=15,
+                    ),
+                ),
+                ("application_date", models.DateTimeField(auto_now_add=True)),
+                ("salary", models.IntegerField()),
+                ("contract_length", models.CharField(max_length=15)),
+                ("job_link", models.URLField()),
+                (
+                    "applicant",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

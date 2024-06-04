@@ -6,20 +6,20 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('job', '0005_alter_job_applicant'),
+        ("job", "0005_alter_job_applicant"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='company',
-            name='founded',
+            model_name="company",
+            name="founded",
         ),
         migrations.RemoveField(
-            model_name='company',
-            name='size',
+            model_name="company",
+            name="size",
         ),
         migrations.RemoveField(
-            model_name='company',
-            name='website',
+            model_name="company",
+            name="website",
         ),
     ]

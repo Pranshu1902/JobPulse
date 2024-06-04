@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 
+
 @api_view(http_method_names=["GET"])
 def get_current_user(request):
     user = request.user
@@ -14,7 +15,7 @@ def get_current_user(request):
     return Response(serializer.data)
 
 
-class UserViewSet(viewsets.ModelViewSet): #GenericViewSet, mixins.CreateModelMixin):
+class UserViewSet(viewsets.ModelViewSet):  # GenericViewSet, mixins.CreateModelMixin):
     permission_classes = []
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -39,36 +40,34 @@ class JobViewSet(viewsets.ModelViewSet):
             raise serializers.ValidationError(status_serializer.errors)
 
     @swagger_auto_schema(
-        method='post',
+        method="post",
         request_body=JobCommentSerializer,
-        responses={201: JobCommentSerializer, 400: 'Bad Request'}
+        responses={201: JobCommentSerializer, 400: "Bad Request"},
     )
-    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def comment(self, request, pk=None):
         job = self.get_object()
 
         if job.applicant.id != self.request.user.id:
-            raise PermissionDenied('You do not have permission to perform this action')
+            raise PermissionDenied("You do not have permission to perform this action")
 
         serializer = JobCommentSerializer(data=request.data)
         if serializer.is_valid():
-            # TODO: add pre-commit to run django tests
-
             serializer.save(job=job)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
-    
+
     @swagger_auto_schema(
-            method='post',
-            request_body=JobStatusUpdateSerializer,
-            responses={201: JobStatusUpdateSerializer, 400: 'Bad Request'}
+        method="post",
+        request_body=JobStatusUpdateSerializer,
+        responses={201: JobStatusUpdateSerializer, 400: "Bad Request"},
     )
-    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def update_status(self, request, pk=None):
         job = self.get_object()
 
         if job.applicant.id != self.request.user.id:
-            raise PermissionDenied('You do not have permission to perform this action')
+            raise PermissionDenied("You do not have permission to perform this action")
 
         serializer = JobStatusUpdateSerializer(data=request.data)
         if serializer.is_valid():
@@ -76,25 +75,22 @@ class JobViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 
-    @swagger_auto_schema(
-        method='get',
-        responses={200: JobStatusUpdateSerializer}
-    )
-    @action(detail=True, methods=['GET'], serializer_class=JobStatusUpdateSerializer)
+    @swagger_auto_schema(method="get", responses={200: JobStatusUpdateSerializer})
+    @action(detail=True, methods=["GET"], serializer_class=JobStatusUpdateSerializer)
     def get_current_status(self, request, pk=None, *args):
         job = self.get_object()
-        latest_status = job.statuses.order_by('-date_posted').first()
+        latest_status = job.statuses.order_by("-date_posted").first()
         serializer = self.get_serializer(latest_status)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['GET'], serializer_class=JobStatusUpdateSerializer)
+    @action(detail=True, methods=["GET"], serializer_class=JobStatusUpdateSerializer)
     def get_all_status(self, request, *args):
         job = self.get_object()
         statuses = job.statuses.all()
         serializer = self.get_serializer(statuses, many=True)
         return Response(serializer.data)
 
-    @action(detail=True, methods=['GET'], serializer_class=JobCommentSerializer)
+    @action(detail=True, methods=["GET"], serializer_class=JobCommentSerializer)
     def get_all_comments(self, request, *args):
         job = self.get_object()
         statuses = job.comments.all()

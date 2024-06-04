@@ -24,27 +24,32 @@ from rest_framework.authtoken import views
 
 router = routers.SimpleRouter(trailing_slash=True)
 
-router.register('users', UserViewSet, basename="users")
-router.register('jobs', JobViewSet, basename='jobs')
-router.register('status', JobStatusUpdateViewSet, basename='status')
-router.register('comments', JobCommentViewSet, basename='comments')
-router.register('company', CompanyViewSet, basename='company')
+router.register("users", UserViewSet, basename="users")
+router.register("jobs", JobViewSet, basename="jobs")
+router.register("status", JobStatusUpdateViewSet, basename="status")
+router.register("comments", JobCommentViewSet, basename="comments")
+router.register("company", CompanyViewSet, basename="company")
 
 schema_view = get_schema_view(
     openapi.Info(
         title="JobPulse",
-        default_version='v1',),
+        default_version="v1",
+    ),
     public=True,
     permission_classes=(permissions.AllowAny,),
 )
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('api-token-auth/', views.obtain_auth_token),
-    path('current-user/', get_current_user),
-    path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
+    path("admin/", admin.site.urls),
+    path("", include(router.urls)),
+    path("api-token-auth/", views.obtain_auth_token),
+    path("current-user/", get_current_user),
+    path(
+        "docs/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
 ]
 
 urlpatterns += router.urls
