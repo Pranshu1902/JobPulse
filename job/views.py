@@ -26,7 +26,15 @@ class JobViewSet(viewsets.ModelViewSet):
     serializer_class = JobSerializer
 
     def perform_create(self, serializer):
-        job = serializer.save(applicant=self.request.user)
+        company_name = self.request.data.get("company")
+
+        # search for existing company object with same name
+        try:
+            company = Company.objects.get(name=company_name)
+        except Company.DoesNotExist:
+            company = Company.objects.create(name=company_name)
+
+        job = serializer.save(applicant=self.request.user, company=company)
 
         # Automatically create a default Job Status for this job
         status_data = {
