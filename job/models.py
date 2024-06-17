@@ -84,6 +84,6 @@ class JobComment(models.Model):
     """Model to store the comments added for each job application"""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="comments")
     comment = models.CharField(max_length=100, null=False, blank=False)
     date = models.DateField(auto_now_add=True)

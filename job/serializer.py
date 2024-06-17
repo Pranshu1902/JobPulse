@@ -38,7 +38,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class JobSerializer(serializers.ModelSerializer):
-    comments = JobCommentSerializer(many=True, read_only=True)
+    comments = serializers.SerializerMethodField()
     statuses = serializers.SerializerMethodField()
     company = CompanySerializer(read_only=True)
     status = serializers.SerializerMethodField()
@@ -47,6 +47,10 @@ class JobSerializer(serializers.ModelSerializer):
         model = Job
         fields = "__all__"
         read_only_fields = ["applicant"]
+
+    def get_comments(self, obj):
+        comments = obj.comments.order_by("-date")
+        return JobCommentSerializer(comments, many=True).data
 
     def get_statuses(self, obj):
         statuses = obj.statuses.order_by("-date_posted")
