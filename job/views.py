@@ -6,6 +6,11 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+from django.shortcuts import render
+
+
+def index(request):
+    return render(request, "home.html")
 
 
 @api_view(http_method_names=["GET"])

@@ -21,6 +21,7 @@ from job.views import *
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework.authtoken import views
+from job.views import index
 
 router = routers.SimpleRouter(trailing_slash=True)
 
@@ -41,6 +42,7 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
+    path("", index),
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
     path("api-token-auth/", views.obtain_auth_token),
