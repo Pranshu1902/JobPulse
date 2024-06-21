@@ -37,10 +37,6 @@ class Company(models.Model):
         return f"{self.name}"
 
 
-# TODO: decide and probably remove the Company model class altogether else update the Job's perform_create method
-# to automatically create a Company object for each Job
-
-
 class Job(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     role = models.CharField(max_length=30, null=False, blank=False)
