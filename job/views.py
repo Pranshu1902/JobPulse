@@ -7,23 +7,26 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import render
+from dj_rest_auth.registration.views import SocialLoginView
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 
 
 def index(request):
     return render(request, "home.html")
 
 
-@api_view(http_method_names=["GET"])
-def get_current_user(request):
-    user = request.user
-    serializer = UserSerializer(user)
-    return Response(serializer.data)
+# @api_view(http_method_names=["GET"])
+# def get_current_user(request):
+#     user = request.user
+#     serializer = UserSerializer(user)
+#     return Response(serializer.data)
 
 
-class UserViewSet(viewsets.ModelViewSet):  # GenericViewSet, mixins.CreateModelMixin):
-    permission_classes = []
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# class UserViewSet(viewsets.ModelViewSet):  # GenericViewSet, mixins.CreateModelMixin):
+#     permission_classes = []
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
 
 
 class JobViewSet(viewsets.ModelViewSet):
@@ -124,3 +127,10 @@ class JobCommentViewSet(viewsets.ModelViewSet):
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+
+
+class GoogleLoginView(SocialLoginView):
+    authentication_classes = []
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = "http://localhost:3000"
+    client_class = OAuth2Client

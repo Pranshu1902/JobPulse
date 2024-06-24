@@ -25,7 +25,7 @@ from job.views import index
 
 router = routers.SimpleRouter(trailing_slash=True)
 
-router.register("users", UserViewSet, basename="users")
+# router.register("users", UserViewSet, basename="users")
 router.register("jobs", JobViewSet, basename="jobs")
 router.register("status", JobStatusUpdateViewSet, basename="status")
 router.register("comments", JobCommentViewSet, basename="comments")
@@ -46,12 +46,14 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
     path("api-token-auth/", views.obtain_auth_token),
-    path("current-user/", get_current_user),
+    # path("current-user/", get_current_user),
     path(
         "docs/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
+    path("api/auth/", include("dj_rest_auth.urls")),
+    path("api/social/login/", include("job.urls")),
 ]
 
 urlpatterns += router.urls

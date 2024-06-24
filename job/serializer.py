@@ -1,13 +1,28 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Job, JobStatusUpdate, JobComment, Company
+from .models import Job, JobStatusUpdate, JobComment, Company, CustomUserModel
 
 
-class UserSerializer(serializers.ModelSerializer):
+class CustomUserModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ["id", "username", "email", "password", "first_name", "last_name"]
-        read_only_fields = ["password"]
+        model = CustomUserModel
+        fields = ["userId", "username", "email", "password"]
+
+    def create(self, validated_data):
+        user = CustomUserModel.objects.create_user(
+            validated_data["username"],
+            validated_data["email"],
+            validated_data["password"],
+        )
+
+        return user
+
+
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ["id", "username", "email", "password", "first_name", "last_name"]
+#         read_only_fields = ["password"]
 
 
 class JobStatusUpdateSerializer(serializers.ModelSerializer):
