@@ -44,7 +44,7 @@ class UserViewSet(viewsets.ModelViewSet):  # GenericViewSet, mixins.CreateModelM
             serializer = UserSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                token, created = Token.objects.get_or_create(user=existing_user)
+                token, created = Token.objects.get_or_create(user=serializer.save())
                 return Response(
                     {"user": serializer.data, "token": token.key}, status=201
                 )
