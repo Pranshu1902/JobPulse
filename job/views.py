@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import render
+from rest_framework.authtoken.models import Token
 
 
 def index(request):
@@ -24,6 +25,29 @@ class UserViewSet(viewsets.ModelViewSet):  # GenericViewSet, mixins.CreateModelM
     permission_classes = []
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    @swagger_auto_schema(
+        method="post",
+        request_body=UserSerializer,
+        responses={201: UserSerializer, 400: "Bad Request"},
+    )
+    @action(detail=False, methods=["post"], permission_classes=[])
+    def social_login(self, request, pk=None):
+        try:
+            # search for existing user
+            existing_user = User.objects.get(username=request.data.get("username"))
+            serializer = UserSerializer(existing_user)
+            token, created = Token.objects.get_or_create(user=existing_user)
+            return Response({"user": serializer.data, "token": token.key}, status=201)
+        except:
+            # create new user
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                token, created = Token.objects.get_or_create(user=existing_user)
+                return Response(
+                    {"user": serializer.data, "token": token.key}, status=201
+                )
 
 
 class JobViewSet(viewsets.ModelViewSet):
