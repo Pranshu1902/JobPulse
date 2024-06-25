@@ -54,6 +54,20 @@ class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.all()
     serializer_class = JobSerializer
 
+    def get_queryset(self):
+        return super().get_queryset().filter(applicant=self.request.user)
+
+    def perform_destroy(self, instance):
+        if instance.applicant != self.request.user:
+            raise PermissionError("You can only delete jobs you created")
+        instance.delete()
+
+    def perform_update(self, serializer):
+        job = self.get_object()
+        if job.applicant != self.request.user:
+            raise PermissionError("You can only update jobs you created")
+        serializer.save()
+
     def perform_create(self, serializer):
         company_name = self.request.data.get("company")
 
@@ -139,10 +153,32 @@ class JobStatusUpdateViewSet(viewsets.ModelViewSet):
     queryset = JobStatusUpdate.objects.all()
     serializer_class = JobStatusUpdateSerializer
 
+    def perform_destroy(self, instance):
+        if instance.job.applicant != self.request.user:
+            raise PermissionError("You can only delete jobs you created")
+        instance.delete()
+
+    def perform_update(self, serializer):
+        status_update = self.get_object()
+        if status_update.job.applicant != self.request.user:
+            raise PermissionError("You can only update jobs you created")
+        serializer.save()
+
 
 class JobCommentViewSet(viewsets.ModelViewSet):
     queryset = JobComment.objects.all()
     serializer_class = JobCommentSerializer
+
+    def perform_destroy(self, instance):
+        if instance.job.applicant != self.request.user:
+            raise PermissionError("You can only delete jobs you created")
+        instance.delete()
+
+    def perform_update(self, serializer):
+        job_comment = self.get_object()
+        if job_comment.job.applicant != self.request.user:
+            raise PermissionError("You can only update jobs you created")
+        serializer.save()
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
