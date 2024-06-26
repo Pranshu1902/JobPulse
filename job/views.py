@@ -55,7 +55,10 @@ class JobViewSet(viewsets.ModelViewSet):
     serializer_class = JobSerializer
 
     def get_queryset(self):
-        return super().get_queryset().filter(applicant=self.request.user)
+        queryset = Job.objects.filter(applicant=self.request.user).order_by(
+            "-application_date"
+        )
+        return queryset
 
     def perform_destroy(self, instance):
         if instance.applicant != self.request.user:
