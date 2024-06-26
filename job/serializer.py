@@ -7,7 +7,27 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username", "email", "password", "first_name", "last_name"]
-        read_only_fields = ["password"]
+        extra_kwargs = {
+            "password": {"write_only": True, "required": False},  # password is optional
+        }
+
+    def create(self, validated_data):
+        password = validated_data.pop("password", None)
+        user = User(**validated_data)
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()  # Set unusable password for social login users
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop("password", None)
+        user = super().update(instance, validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
+        return user
 
 
 class JobStatusUpdateSerializer(serializers.ModelSerializer):
