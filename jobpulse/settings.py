@@ -29,9 +29,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".fly.dev"]
-
-CSRF_TRUSTED_ORIGINS = ["https://*.fly.dev"]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -48,6 +46,7 @@ INSTALLED_APPS = [
     "rest_framework_swagger",
     "drf_yasg",
     "corsheaders",
+    "whitenoise.runserver_nostatic",
 ]
 
 SWAGGER_SETTINGS = {
@@ -72,9 +71,13 @@ CORS_ALLOWED_ORIGINS = [
     "https://jobpulse-fe.vercel.app",
 ]
 
+CSRF_TRUSTED_ORIGINS = ["https://*.railway.app"]
+
 ROOT_URLCONF = "jobpulse.urls"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 TEMPLATES = [
     {
@@ -98,12 +101,18 @@ WSGI_APPLICATION = "jobpulse.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": env.db()
+#     # "default": {
+#     #     "ENGINE": "django.db.backends.sqlite3",
+#     #     "NAME": BASE_DIR / "db.sqlite3",
+#     # }
+# }
+import dj_database_url
+
+DATABASE_URL = env("DATABASE_URL")
 DATABASES = {
-    "default": env.db()
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": BASE_DIR / "db.sqlite3",
-    # }
+    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
 }
 
 REST_FRAMEWORK = {
