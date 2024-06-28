@@ -69,7 +69,7 @@ class JobStatusUpdate(models.Model):
         null=False,
         blank=False,
     )
-    update_text = models.CharField(max_length=100, default="Initialize Job")
+    update_text = models.CharField(max_length=200, default="Initialize Job")
     date_posted = models.DateTimeField(auto_now_add=True)
 
 
@@ -81,5 +81,5 @@ class JobComment(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="comments")
-    comment = models.CharField(max_length=100, null=False, blank=False)
+    comment = models.CharField(max_length=1000, null=False, blank=False)
     date = models.DateTimeField(auto_now_add=True)
