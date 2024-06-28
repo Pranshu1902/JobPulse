@@ -140,15 +140,15 @@ class JobViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["GET"], serializer_class=JobStatusUpdateSerializer)
     def get_all_status(self, request, *args):
         job = self.get_object()
-        statuses = job.statuses.all()
+        statuses = job.statuses.all().order_by("-date_posted")
         serializer = self.get_serializer(statuses, many=True)
         return Response(serializer.data)
 
     @action(detail=True, methods=["GET"], serializer_class=JobCommentSerializer)
     def get_all_comments(self, request, pk=None):
         job = self.get_object()
-        statuses = job.comments.all()
-        serializer = self.get_serializer(statuses, many=True)
+        comments = job.comments.all().order_by("-date")
+        serializer = self.get_serializer(comments, many=True)
         return Response(serializer.data)
 
 
