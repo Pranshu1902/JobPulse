@@ -145,7 +145,7 @@ class JobViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(detail=True, methods=["GET"], serializer_class=JobCommentSerializer)
-    def get_all_comments(self, request, *args):
+    def get_all_comments(self, request, pk=None):
         job = self.get_object()
         statuses = job.comments.all()
         serializer = self.get_serializer(statuses, many=True)
