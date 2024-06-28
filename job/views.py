@@ -14,6 +14,11 @@ def index(request):
     return render(request, "home.html")
 
 
+def usersCount(request):
+    total_users = User.objects.count()
+    return render(request, "users.html", {"total_users": total_users})
+
+
 @api_view(http_method_names=["GET"])
 def get_current_user(request):
     user = request.user

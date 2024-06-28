@@ -43,6 +43,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("", index),
+    path("user-count/", usersCount),
     path("admin/", admin.site.urls),
     path("", include(router.urls)),
     path("api-token-auth/", views.obtain_auth_token),
