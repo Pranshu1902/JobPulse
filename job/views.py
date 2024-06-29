@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from django.contrib.auth.models import User
 from .serializer import *
@@ -192,3 +192,9 @@ class JobCommentViewSet(viewsets.ModelViewSet):
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
+
+    def destroy(self, request, *args, **kwargs):
+        return Response(
+            {"detail": "Delete operation not allowed."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
